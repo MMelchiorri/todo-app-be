@@ -21,6 +21,27 @@ class Database{
                 console.error('Database connection error:', err);
             });
     }
+
+    async insertElement(model, data) {
+        try {
+            const element = new model(data);
+            await element.save();
+            return element;
+        } catch (error) {
+            console.error('Error inserting element:', error);
+            throw error;
+        }
+
+    }
+
+    async getElements(model) {
+        try {
+            return await model.find();
+        } catch (error) {
+            console.error('Error getting elements:', error);
+            throw error;
+        }
+    }
 }
 
 module.exports = Database;
