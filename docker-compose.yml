@@ -1,0 +1,46 @@
+services:
+  app:
+    container_name: todo-app
+    image: node:20
+    depends_on:
+      - db
+    ports:
+      - "3001:3000"
+    volumes:
+        - ./src:/usr/src/app
+        - /usr/src/app/node_modules
+    working_dir: /usr/src/app
+    command: ["sh", "-c", "npm install && npm run dev"]
+    networks:
+      - internal
+      - marco
+  db:
+    container_name: todo-db
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+        - ./docker/data/mongo:/data/db
+
+    networks:
+        - internal
+        - marco
+  mongo-express:
+    container_name: todo-mongo-express
+    image: mongo-express:latest
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+    networks:
+        - internal
+        - marco
+networks:
+    marco:
+        name: marco
+        external: true
+    internal:
+        driver: bridge
