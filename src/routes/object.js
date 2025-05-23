@@ -1,10 +1,11 @@
-const {router} = require('express');
-const rest = require('../controllers/rest');
+const rest = require("../controllers/rest");
 
 objectRoutes = [
-    {
-        method: 'post',
-        route: '/object',
-        controller: rest.readAll('ObjectModel'),
-    }
-]
+  {
+    method: "get",
+    route: "/object",
+    controller: rest.readAll("ObjectModel"),
+  },
+];
+
+module.exports = objectRoutes;
