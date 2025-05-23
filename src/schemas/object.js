@@ -25,4 +25,4 @@ const ObjectSchema = new Schema({
   },
 });
 
-export const ObjectModel = mongoose.model("Object", ObjectSchema);
+module.exports = mongoose.model("Object", ObjectSchema);

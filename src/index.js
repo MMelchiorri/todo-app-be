@@ -15,6 +15,8 @@ routes.forEach((route) => {
   router[route.method](route.route, route.controller);
 });
 
+app.use(router);
+
 app.listen(port, () => {
   Database.getInstance();
   console.log("Database connection established");

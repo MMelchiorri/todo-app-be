@@ -1,10 +1,11 @@
 const rest = require("../controllers/rest");
+const ObjectModel = require("../schemas/object");
 
 objectRoutes = [
   {
     method: "get",
     route: "/object",
-    controller: rest.readAll("ObjectModel"),
+    controller: rest.readAll(ObjectModel),
   },
 ];
 
