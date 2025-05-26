@@ -32,4 +32,4 @@ const ObjectSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("Object", ObjectSchema);
+module.exports = mongoose.model("TodoObject", ObjectSchema);

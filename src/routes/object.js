@@ -1,5 +1,5 @@
 const rest = require("../controllers/rest");
-const ObjectModel = require("../schemas/object");
+const ObjectModel = require("../schemas/TodoObject");
 
 objectRoutes = [
   {
