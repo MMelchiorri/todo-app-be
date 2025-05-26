@@ -1,5 +1,5 @@
 const Database = require("../services/Database");
-const { raw } = require("express");
+const NoDataError = require("../error/NoData");
 
 const database = Database.getInstance();
 
@@ -8,8 +8,7 @@ const readAll = (model) => async (req, res, next) => {
     const result = await database.getElements(model);
     res.json(result);
   } catch (err) {
-    console.error("Error in readAll:", err);
-    res.status(500).json({ error: "Server error" });
+    next(err);
   }
 };
 
@@ -17,8 +16,8 @@ const insert = (model) => async (req, res, next) => {
   try {
     const result = await database.insertElement(model, req.body);
     res.json(result);
-  } catch (e) {
-    console.log("error in insert", e);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -29,13 +28,10 @@ const getById = (model) => async (req, res, next) => {
     if (result) {
       res.send(result);
     } else {
-      res
-        .status(404)
-        .json({ message: `${model} with id ${req.params._id} not found.` });
+      return next(new NoDataError("Element not found"));
     }
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: "Internal server error." });
+  } catch (err) {
+    next(err);
   }
 };
 

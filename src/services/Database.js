@@ -31,7 +31,6 @@ class Database {
       await element.save();
       return element;
     } catch (error) {
-      console.error("Error inserting element:", error);
       throw error;
     }
   }
@@ -40,7 +39,6 @@ class Database {
     try {
       return await model.find();
     } catch (error) {
-      console.error("Error getting elements:", error);
       throw error;
     }
   }
@@ -48,8 +46,8 @@ class Database {
   async getElementById(model, id) {
     try {
       return await model.findById(id).exec();
-    } catch (e) {
-      console.log("Error", e);
+    } catch (err) {
+      throw err;
     }
   }
 }

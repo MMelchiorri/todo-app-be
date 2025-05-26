@@ -1,9 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv").config();
 const Database = require("./services/Database");
+const dotenv = require("dotenv").config();
 const routes = require("./routes/index");
 const router = express.Router();
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const port = process.env.PORT || 3000;
 
@@ -16,6 +17,7 @@ routes.forEach((route) => {
 });
 
 app.use(router);
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   Database.getInstance();
