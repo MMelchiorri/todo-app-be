@@ -44,6 +44,14 @@ class Database {
       throw error;
     }
   }
+
+  async getElementById(model, id) {
+    try {
+      return await model.findById(id).exec();
+    } catch (e) {
+      console.log("Error", e);
+    }
+  }
 }
 
 module.exports = Database;
