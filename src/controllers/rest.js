@@ -1,6 +1,7 @@
 const Database = require("../services/Database");
 const NoDataError = require("../error/NoData");
-
+const ExistDataError = require("../error/ExistData");
+const { v4: uuidv4 } = require("uuid");
 const database = Database.getInstance();
 
 const readAll = (model) => async (req, res, next) => {
@@ -14,6 +15,12 @@ const readAll = (model) => async (req, res, next) => {
 
 const insert = (model) => async (req, res, next) => {
   try {
+    const todo_job = await database.getElementById(model, req.body.id);
+    if (todo_job) {
+      console.log("Element already exists");
+      return next(new ExistDataError("Element already exists"));
+    }
+    req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
     res.json(result);
   } catch (err) {
