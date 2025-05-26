@@ -30,7 +30,7 @@ const insert = (model) => async (req, res, next) => {
 
 const getById = (model) => async (req, res, next) => {
   try {
-    const result = await database.getElementById(model, req.params._id);
+    const result = await database.getElementById(model, req.params.id);
 
     if (result) {
       res.send(result);

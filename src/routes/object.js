@@ -14,7 +14,7 @@ objectRoutes = [
   },
   {
     method: "get",
-    route: "/object/:_id",
+    route: "/object/:id",
     controller: rest.getById(ObjectModel),
   },
 ];
