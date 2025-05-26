@@ -42,4 +42,16 @@ const getById = (model) => async (req, res, next) => {
   }
 };
 
-module.exports = { readAll, insert, getById };
+const put = (model) => async (req, res, next) => {
+  try {
+    const result = await database.getElementById(model, req.params.id);
+    if (!result) {
+      return next(new NoDataError("Element not found"));
+    }
+    await database.put(model, req.params.id, req.body);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { readAll, insert, getById, put };

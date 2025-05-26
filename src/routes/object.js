@@ -17,6 +17,11 @@ objectRoutes = [
     route: "/object/:id",
     controller: rest.getById(ObjectModel),
   },
+  {
+    method: "put",
+    route: "/object/:id",
+    controller: rest.put(ObjectModel),
+  },
 ];
 
 module.exports = objectRoutes;

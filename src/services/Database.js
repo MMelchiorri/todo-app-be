@@ -36,19 +36,26 @@ class Database {
   }
 
   async getElements(model) {
-    try {
-      return await model.find();
-    } catch (error) {
-      throw error;
+    const elements = await model.find().exec();
+    if (elements.length === 0) {
+      throw new Error("No data found");
     }
+    return elements;
   }
 
   async getElementById(model, id) {
-    try {
-      return await model.findById(id).exec();
-    } catch (err) {
-      throw err;
+    if (!id) {
+      throw new Error("ID is required to retrieve an element");
     }
+    return await model.findById(id).exec();
+  }
+
+  async put(model, id, data) {
+    const todoJob = await this.getElementById(model, id);
+    if (!todoJob) {
+      throw new Error("Element not found");
+    }
+    return await model.updateOne({ id: id }, data).exec();
   }
 }
 
