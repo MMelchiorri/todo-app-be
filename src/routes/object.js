@@ -1,27 +1,27 @@
 const rest = require("../controllers/rest");
-const ObjectModel = require("../schemas/TodoObject");
+const todosModel = require("../schemas/Todos");
 
-objectRoutes = [
+todosRoutes = [
   {
     method: "get",
-    route: "/object",
-    controller: rest.readAll(ObjectModel),
+    route: "/todos",
+    controller: rest.readAll(todosModel),
   },
   {
     method: "post",
-    route: "/object",
-    controller: rest.insert(ObjectModel),
+    route: "/todos",
+    controller: rest.insert(todosModel),
   },
   {
     method: "get",
-    route: "/object/:id",
-    controller: rest.getById(ObjectModel),
+    route: "/todos/:id",
+    controller: rest.getById(todosModel),
   },
   {
     method: "put",
-    route: "/object/:id",
-    controller: rest.put(ObjectModel),
+    route: "/todos/:id",
+    controller: rest.put(todosModel),
   },
 ];
 
-module.exports = objectRoutes;
+module.exports = todosRoutes;
