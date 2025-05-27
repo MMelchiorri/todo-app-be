@@ -15,15 +15,13 @@ const readAll = (model) => async (req, res, next) => {
 
 const insert = (model) => async (req, res, next) => {
   try {
-    const todo_job = await database.getElementById(model, req.body.id);
-    if (todo_job) {
-      console.log("Element already exists");
-      return next(new ExistDataError("Element already exists"));
-    }
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
     res.json(result);
   } catch (err) {
+    if (err.code === 11000) {
+      next(new ExistDataError("Element already exists"));
+    }
     next(err);
   }
 };
