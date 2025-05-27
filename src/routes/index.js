@@ -1,3 +1,3 @@
-const ObjectRoute = require("./object");
+const ObjectRoute = require("./todos");
 
 module.exports = [...ObjectRoute];

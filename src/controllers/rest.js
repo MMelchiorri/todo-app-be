@@ -52,4 +52,17 @@ const put = (model) => async (req, res, next) => {
   }
 };
 
-module.exports = { readAll, insert, getById, put };
+const deleteById = (model) => async (req, res, next) => {
+  try {
+    const result = await database.getElementById(model, req.params.id);
+    if (!result) {
+      return next(new NoDataError("Element not found"));
+    }
+    await database.delete(model, req.params.id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { readAll, insert, getById, put, deleteById };

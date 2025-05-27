@@ -22,6 +22,11 @@ todosRoutes = [
     route: "/todos/:id",
     controller: rest.put(todosModel),
   },
+  {
+    method: "delete",
+    route: "/todos/:id",
+    controller: rest.deleteById(todosModel),
+  },
 ];
 
 module.exports = todosRoutes;
