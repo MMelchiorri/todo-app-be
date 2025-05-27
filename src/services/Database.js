@@ -47,7 +47,7 @@ class Database {
     if (!id) {
       throw new Error("ID is required to retrieve an element");
     }
-    return await model.findById(id).exec();
+    return await model.findOne({ id }).exec();
   }
 
   async put(model, id, data) {
@@ -58,6 +58,7 @@ class Database {
     return await model.updateOne({ id: id }, data).exec();
   }
   async deleteElementById(model, id) {
+    console.log(id);
     const todoJob = await this.getElementById(model, id);
     if (!todoJob) {
       throw new Error("Element not found");
