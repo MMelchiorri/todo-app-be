@@ -58,7 +58,7 @@ const deleteById = (model) => async (req, res, next) => {
     if (!result) {
       return next(new NoDataError("Element not found"));
     }
-    await database.delete(model, req.params.id);
+    await database.deleteElementById(model, req.params.id);
     res.status(204).send();
   } catch (err) {
     next(err);
