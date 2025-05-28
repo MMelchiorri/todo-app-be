@@ -19,16 +19,40 @@ const Todos = new Schema({
     required: true,
   },
   properties: {
-    type: Object,
-    required: true,
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
+    category: {
+      type: String,
+      default: "",
+    },
+    assignedTo: {
+      type: String,
+      default: "",
+    },
+    dueDate: {
+      type: Date,
+    },
+    reminder: {
+      type: Boolean,
+      default: false,
+    },
+    reminderDate: {
+      type: Date,
+    },
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
   priority: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "",
   },
 });
 
