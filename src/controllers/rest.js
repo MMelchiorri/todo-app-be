@@ -6,7 +6,14 @@ const database = Database.getInstance();
 
 const readAll = (model) => async (req, res, next) => {
   try {
-    const result = await database.getElements(model);
+    const properties = Object.entries(req.query).reduce((acc, [key, value]) => {
+      if (value === "true") acc[key] = true;
+      else if (value === "false") acc[key] = false;
+      else acc[key] = value;
+      return acc;
+    }, {});
+
+    const result = await database.getElements(model, properties);
     res.json(result);
   } catch (err) {
     next(err);

@@ -18,33 +18,31 @@ const Todos = new Schema({
     type: String,
     required: true,
   },
-  properties: {
-    completed: {
-      type: Boolean,
-      default: false,
-    },
-    tags: {
-      type: [String],
-      default: [],
-    },
-    category: {
-      type: String,
-      default: "",
-    },
-    assignedTo: {
-      type: String,
-      default: "",
-    },
-    dueDate: {
-      type: Date,
-    },
-    reminder: {
-      type: Boolean,
-      default: false,
-    },
-    reminderDate: {
-      type: Date,
-    },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
+  tags: {
+    type: [String],
+    default: [],
+  },
+  category: {
+    type: String,
+    default: "",
+  },
+  assignedTo: {
+    type: String,
+    default: "",
+  },
+  dueDate: {
+    type: Date,
+  },
+  reminder: {
+    type: Boolean,
+    default: false,
+  },
+  reminderDate: {
+    type: Date,
   },
   createdAt: {
     type: Date,

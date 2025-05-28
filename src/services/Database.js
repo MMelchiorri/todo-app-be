@@ -35,8 +35,8 @@ class Database {
     }
   }
 
-  async getElements(model) {
-    const elements = await model.find().exec();
+  async getElements(model, params = {}) {
+    const elements = await model.find(params).exec();
     if (elements.length === 0) {
       throw new Error("No data found");
     }
@@ -58,7 +58,6 @@ class Database {
     return await model.updateOne({ id: id }, data).exec();
   }
   async deleteElementById(model, id) {
-    console.log(id);
     const todoJob = await this.getElementById(model, id);
     if (!todoJob) {
       throw new Error("Element not found");
