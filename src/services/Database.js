@@ -36,11 +36,7 @@ class Database {
   }
 
   async getElements(model, params = {}) {
-    const elements = await model.find(params).exec();
-    if (elements.length === 0) {
-      throw new Error("No data found");
-    }
-    return elements;
+    return await model.find(params).exec();
   }
 
   async getElementById(model, id) {
