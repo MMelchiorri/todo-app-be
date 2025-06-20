@@ -3,7 +3,7 @@ const NoDataError = require("../error/NoData");
 const ExistDataError = require("../error/ExistData");
 const { v4: uuidv4 } = require("uuid");
 const database = Database.getInstance();
-
+const bcrypt = require("bcryptjs");
 const readAll = (model) => async (req, res, next) => {
   try {
     const properties = Object.entries(req.query).reduce((acc, [key, value]) => {
@@ -21,6 +21,11 @@ const readAll = (model) => async (req, res, next) => {
 };
 
 const insert = (model) => async (req, res, next) => {
+  console.log();
+  if (model.modelName === "UserObject") {
+    req.body.createdAt = new Date();
+    req.body.password = bcrypt.hashSync(req.body.password, 10);
+  }
   try {
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
