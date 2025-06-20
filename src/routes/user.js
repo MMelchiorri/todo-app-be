@@ -1,7 +1,7 @@
 const rest = require("../controllers/rest");
 const usersModel = require("../schemas/Users");
 
-todosRoutes = [
+usersRoutes = [
   {
     method: "get",
     route: "/users",
@@ -9,24 +9,24 @@ todosRoutes = [
   },
   {
     method: "post",
-    route: "/todos",
+    route: "/users",
     controller: rest.insert(usersModel),
   },
   {
     method: "get",
-    route: "/todos/:id",
+    route: "/users/:id",
     controller: rest.getById(usersModel),
   },
   {
     method: "put",
-    route: "/todos/:id",
+    route: "/users/:id",
     controller: rest.put(usersModel),
   },
   {
     method: "delete",
-    route: "/todos/:id",
+    route: "/users/:id",
     controller: rest.deleteById(usersModel),
   },
 ];
 
-module.exports = todosRoutes;
+module.exports = usersRoutes;
