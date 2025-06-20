@@ -1,3 +1,4 @@
-const ObjectRoute = require("./todos");
+const TodoRoute = require("./todos");
+const UserRoute = require("./user");
 
-module.exports = [...ObjectRoute];
+module.exports = [...TodoRoute, ...UserRoute];
