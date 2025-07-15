@@ -20,8 +20,15 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  lastLogin: {
+  updatedAt: {
     type: Date,
+    default: Date.now,
+  },
+  isActive: {
+    type: Boolean,
+  },
+  role: {
+    type: String,
   },
 });
 
