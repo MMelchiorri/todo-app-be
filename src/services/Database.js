@@ -60,6 +60,10 @@ class Database {
     }
     return await model.deleteOne({ id: id }).exec();
   }
+
+  async deleteAll(model) {
+    return await model.deleteMany().exec();
+  }
 }
 
 module.exports = Database;

@@ -27,6 +27,11 @@ usersRoutes = [
     route: "/users/:id",
     controller: rest.deleteById(usersModel),
   },
+  {
+    method: "delete",
+    route: "/users",
+    controller: rest.deleteAll(usersModel),
+  },
 ];
 
 module.exports = usersRoutes;

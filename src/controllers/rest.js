@@ -77,4 +77,13 @@ const deleteById = (model) => async (req, res, next) => {
   }
 };
 
-module.exports = { readAll, insert, getById, put, deleteById };
+const deleteAll = (model) => async (req, res, next) => {
+  try {
+    await database.deleteAll(model);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { readAll, insert, getById, put, deleteById, deleteAll };
