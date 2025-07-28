@@ -30,6 +30,9 @@ const UserSchema = new Schema({
   role: {
     type: String,
   },
+  jobAssigned: {
+    type: [String],
+  },
 });
 
 module.exports = mongoose.model("UserObject", UserSchema);
