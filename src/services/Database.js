@@ -43,7 +43,7 @@ class Database {
     if (!id) {
       throw new Error("ID is required to retrieve an element");
     }
-    return await model.findOne({ id }).exec();
+    return await model.findOne({ id: id }).exec();
   }
 
   async put(model, id, data) {
