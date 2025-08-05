@@ -21,7 +21,6 @@ const readAll = (model) => async (req, res, next) => {
 };
 
 const insert = (model) => async (req, res, next) => {
-  console.log();
   if (model.modelName === "UserObject") {
     req.body.createdAt = new Date();
     req.body.password = bcrypt.hashSync(req.body.password, 10);

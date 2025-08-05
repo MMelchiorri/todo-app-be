@@ -1,13 +1,15 @@
 const NoDataError = require("../error/NoData");
 const ExistData = require("../error/ExistData");
 
-errorMiddleware = (err, req, res, next) => {
-  if (err instanceof NoDataError) {
-    return res.status(err.statusCode).json({ error: err.message });
-  } else if (err instanceof ExistData) {
+const errorMiddleware = (err, req, res, next) => {
+  if (err instanceof NoDataError || err instanceof ExistData) {
     return res.status(err.statusCode).json({ error: err.message });
   }
-  next(err);
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Errore interno del server";
+
+  return res.status(statusCode).json({ error: message });
 };
 
 module.exports = errorMiddleware;
