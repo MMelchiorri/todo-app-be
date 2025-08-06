@@ -58,7 +58,7 @@ class Database {
     if (!todoJob) {
       throw new Error("Element not found");
     }
-    return await model.deleteOne({ id: id }).exec();
+    return await model.findById(id).exec();
   }
 
   async deleteAll(model) {
