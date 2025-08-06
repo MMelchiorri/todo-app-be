@@ -54,11 +54,7 @@ class Database {
     return await model.updateOne({ id: id }, data).exec();
   }
   async deleteElementById(model, id) {
-    const todoJob = await this.getElementById(model, id);
-    if (!todoJob) {
-      throw new Error("Element not found");
-    }
-    return await model.findById(id).exec();
+    return await model.findByIdAndDelete(id).exec();
   }
 
   async deleteAll(model) {
