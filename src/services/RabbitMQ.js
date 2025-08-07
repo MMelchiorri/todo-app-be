@@ -26,8 +26,12 @@ class RabbitMQ {
 
         this.channel = await this.connection.createChannel();
         await this.channel.assertExchange("todo", "direct", { durable: true });
-        await this.channel.assertQueue("todo_queue", { durable: true });
-        await this.channel.bindQueue("todo_queue", "todo", "todo_job");
+        await this.channel.assertExchange("user", "direct", { durable: true });
+        await this.channel.assertQueue("user", { durable: true });
+        await this.channel.assertQueue("TodoModel", { durable: true });
+        await this.channel.assertQueue("UserModel", { durable: true });
+        await this.channel.bindQueue("TodoModel", "todo", "todo_job");
+        await this.channel.bindQueue("UserModel", "user", "user_job");
 
         console.log("Exchange and queue created");
         break;

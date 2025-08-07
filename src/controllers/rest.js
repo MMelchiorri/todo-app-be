@@ -1,8 +1,10 @@
 const Database = require("../services/Database");
 const NoDataError = require("../error/NoData");
 const ExistDataError = require("../error/ExistData");
+const rabbitmq = require("../services/RabbitMQ");
 const { v4: uuidv4 } = require("uuid");
 const database = Database.getInstance();
+const rabbitmqService = rabbitmq.getInstance();
 const bcrypt = require("bcryptjs");
 const readAll = (model) => async (req, res, next) => {
   try {
@@ -28,6 +30,8 @@ const insert = (model) => async (req, res, next) => {
   try {
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
+    console.log(model.modelName);
+
     res.json(result);
   } catch (err) {
     if (err.code === 11000) {

@@ -6,6 +6,7 @@ const routes = require("./routes/index");
 const router = express.Router();
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const RabbitMQ = require("./services/Rabbitmq");
+const startTodoConsumer = require("./consumer/consumerTodo");
 
 const port = process.env.PORT || 3000;
 
@@ -20,9 +21,10 @@ routes.forEach((route) => {
 app.use(router);
 app.use(errorMiddleware);
 
-app.listen(port, () => {
+app.listen(port, async () => {
   Database.getInstance();
   RabbitMQ.getInstance();
+  //await startTodoConsumer();
   console.log("Database connection established");
   console.log(`Server is running on port ${port}`);
 });
