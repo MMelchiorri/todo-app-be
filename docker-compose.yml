@@ -22,6 +22,9 @@ services:
       - "27017:27017"
     volumes:
       - ./docker/data/mongo:/data/db
+    networks:
+      - internal
+      - marco
 
   rabbitmq:
     container_name: todo-rabbitmq
