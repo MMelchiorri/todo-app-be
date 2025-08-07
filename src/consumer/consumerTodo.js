@@ -9,6 +9,7 @@ const waitForChannel = async () => {
 
 const startTodoConsumer = async (model) => {
   await waitForChannel();
+  console.log(model);
   rabbitmqService.channel.consume(
     model,
     async (msg) => {
