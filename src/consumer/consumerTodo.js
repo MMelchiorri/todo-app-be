@@ -9,11 +9,10 @@ const waitForChannel = async () => {
 
 const startTodoConsumer = async (model) => {
   await waitForChannel();
-
   rabbitmqService.channel.consume(
-    model.modelName,
+    model,
     async (msg) => {
-      console.log(model.modelName, msg);
+      console.log(model, msg);
       if (msg !== null) {
         try {
           const content = JSON.parse(msg.content.toString());

@@ -54,4 +54,4 @@ const Todos = new Schema({
   },
 });
 
-module.exports = mongoose.model("TodoObject", Todos);
+module.exports = mongoose.model("TodoModel", Todos);
