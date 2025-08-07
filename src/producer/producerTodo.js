@@ -15,7 +15,6 @@ const startTodoPublisher = async (model, message) => {
     "todo_job",
     Buffer.from(JSON.stringify(message)),
   );
-  console.log(message);
 
   console.log("📤 Message published to 'todo':", message);
 };
