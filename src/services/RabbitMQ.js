@@ -14,6 +14,7 @@ class RabbitMQ {
 
   initialize = async () => {
     const connection = await amqp.connect(process.env.RABBITMQ_URI);
+    console.log("Connected to RabbitMQ");
     const channel = await connection.createChannel();
   };
 }
