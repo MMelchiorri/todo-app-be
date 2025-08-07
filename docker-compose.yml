@@ -4,6 +4,7 @@ services:
     image: node:20
     depends_on:
       - db
+      - rabbitmq
     ports:
       - "3001:3001"
     volumes:
