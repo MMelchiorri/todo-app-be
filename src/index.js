@@ -5,6 +5,7 @@ const dotenv = require("dotenv").config();
 const routes = require("./routes/index");
 const router = express.Router();
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const RabbitMQ = require("./services/Rabbitmq");
 
 const port = process.env.PORT || 3000;
 
@@ -21,6 +22,7 @@ app.use(errorMiddleware);
 
 app.listen(port, () => {
   Database.getInstance();
+  RabbitMQ.getInstance();
   console.log("Database connection established");
   console.log(`Server is running on port ${port}`);
 });

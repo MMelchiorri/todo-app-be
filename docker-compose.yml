@@ -7,20 +7,22 @@ services:
     ports:
       - "3001:3001"
     volumes:
-        - ./src:/usr/src/app
-        - /usr/src/app/node_modules
+      - ./src:/usr/src/app
+      - /usr/src/app/node_modules
     working_dir: /usr/src/app
     command: ["sh", "-c", "npm install && npm run dev"]
     networks:
       - internal
       - marco
+
   db:
     container_name: todo-db
     image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
-        - ./docker/data/mongo:/data/db
+      - ./docker/data/mongo:/data/db
+
   rabbitmq:
     container_name: todo-rabbitmq
     image: rabbitmq:4-management
@@ -32,12 +34,12 @@ services:
       RABBITMQ_DEFAULT_PASS: password
       RABBITMQ_DEFAULT_VHOST: /
     volumes:
-      - rabbitmq-lib:/var/lib/rabbitmq/
+      - rabbitmq-lib:/var/lib/rabbitmq
       - rabbitmq-log:/var/log/rabbitmq
-
     networks:
-        - internal
-        - marco
+      - internal
+      - marco
+
   mongo-express:
     container_name: todo-mongo-express
     image: mongo-express:latest
@@ -49,11 +51,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: password
     networks:
-        - internal
-        - marco
+      - internal
+      - marco
+
 networks:
-    marco:
-        name: marco
-        external: true
-    internal:
-        driver: bridge
+  marco:
+    name: marco
+    external: true
+  internal:
+    driver: bridge
+
+volumes:
+  rabbitmq-lib:
+  rabbitmq-log:
