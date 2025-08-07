@@ -7,12 +7,13 @@ const waitForChannel = async () => {
   }
 };
 
-const startTodoConsumer = async () => {
+const startTodoConsumer = async (model) => {
   await waitForChannel();
 
   rabbitmqService.channel.consume(
-    "todo_queue",
+    model.modelName,
     async (msg) => {
+      console.log(model.modelName, msg);
       if (msg !== null) {
         try {
           const content = JSON.parse(msg.content.toString());

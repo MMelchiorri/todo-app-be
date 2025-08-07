@@ -7,14 +7,15 @@ const waitForChannel = async () => {
   }
 };
 
-const publishTodo = async (message) => {
+const publishTodo = async (model, message) => {
   await waitForChannel();
 
   rabbitmqService.channel.publish(
-    "todo",
+    model.modelName,
     "todo_job",
     Buffer.from(JSON.stringify(message)),
   );
+  console.log(message);
 
   console.log("📤 Message published to 'todo':", message);
 };
