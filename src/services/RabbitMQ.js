@@ -18,4 +18,4 @@ class RabbitMQ {
   };
 }
 
-export default RabbitMQ;
+module.exports = RabbitMQ;
