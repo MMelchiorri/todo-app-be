@@ -24,7 +24,7 @@ const readAll = (model) => async (req, res, next) => {
 };
 
 const insert = (model) => async (req, res, next) => {
-  if (model.modelName === "UserObject") {
+  if (model.modelName === "UserModel") {
     req.body.createdAt = new Date();
     req.body.password = bcrypt.hashSync(req.body.password, 10);
   }
@@ -32,8 +32,8 @@ const insert = (model) => async (req, res, next) => {
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
     await publishTodo(model.modelName, result);
-    if (model.modelName === "TodoObject") {
-      await startTodoConsumer("UserObject");
+    if (model.modelName === "TodoModel") {
+      await startTodoConsumer("UserModel");
     }
     res.json(result);
   } catch (err) {
