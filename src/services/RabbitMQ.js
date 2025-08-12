@@ -22,8 +22,6 @@ class RabbitMQ {
     while (true) {
       try {
         this.connection = await amqp.connect(uri);
-        console.log("Connected to RabbitMQ");
-
         this.channel = await this.connection.createChannel();
         await this.channel.assertExchange("todo", "direct", { durable: true });
         await this.channel.assertQueue("TodoModel", { durable: true });
@@ -31,7 +29,6 @@ class RabbitMQ {
         await this.channel.bindQueue("TodoModel", "todo", "todo_job");
         await this.channel.bindQueue("UserModel", "todo", "todo_job");
 
-        console.log("Exchange and queue created");
         break;
       } catch (err) {
         console.error(
