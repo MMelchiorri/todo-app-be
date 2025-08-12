@@ -61,15 +61,14 @@ class Database {
     return await model.deleteMany().exec();
   }
 
-  async updateById(model, id, data) {
+  async updateById(model, data) {
     const user = await model.findOne({ email: data.assignedTo });
-    user.jobAssigned.push(id);
-    console.log("user", user);
+    user.jobAssigned.push(data.id);
     if (!user) {
       throw new Error("Element not found");
     }
 
-    return await model.updateOne({ id: id }, data).exec();
+    return await model.updateOne({ id: user.id }, user).exec();
   }
 }
 

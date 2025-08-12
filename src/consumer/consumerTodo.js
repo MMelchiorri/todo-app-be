@@ -19,7 +19,7 @@ const startTodoConsumer = async (model) => {
         try {
           const content = JSON.parse(msg.content.toString());
           console.log("📥 Message consumed from 'todo_queue':", content);
-          await database.updateById(usersModel, content._id, content);
+          await database.updateById(usersModel, content);
 
           rabbitmqService.channel.ack(msg);
         } catch (err) {
