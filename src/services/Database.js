@@ -62,7 +62,7 @@ class Database {
   }
 
   async updateById(model, data) {
-    const user = await model.findOne({ email: data.assignedTo });
+    const user = await model.findOne({ username: data.assignedTo });
     user.jobAssigned.push(data.id);
     if (!user) {
       throw new Error("Element not found");
