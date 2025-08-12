@@ -1,7 +1,6 @@
 const Database = require("../services/Database");
 const NoDataError = require("../error/NoData");
 const ExistDataError = require("../error/ExistData");
-const rabbitmq = require("../services/RabbitMQ");
 const { v4: uuidv4 } = require("uuid");
 const database = Database.getInstance();
 const startTodoPublisher = require("../producer/producerTodo");
