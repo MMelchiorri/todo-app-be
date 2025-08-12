@@ -4,7 +4,7 @@ const ExistDataError = require("../error/ExistData");
 const rabbitmq = require("../services/RabbitMQ");
 const { v4: uuidv4 } = require("uuid");
 const database = Database.getInstance();
-const publishTodo = require("../producer/producerTodo");
+const startTodoPublisher = require("../producer/producerTodo");
 const bcrypt = require("bcryptjs");
 const startTodoConsumer = require("../consumer/consumerTodo");
 const readAll = (model) => async (req, res, next) => {
@@ -26,17 +26,22 @@ const readAll = (model) => async (req, res, next) => {
 const insert = (model) => async (req, res, next) => {
   if (model.modelName === "UserObject") {
     req.body.createdAt = new Date();
-    req.body.password = bcrypt.hashSync(req.body.password, 10);
+    req.body.password = bcrypt.hashSync(req.body.password, 10); // Meglio async per non bloccare
   }
+
   try {
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
-    await publishTodo(model.modelName, result);
-    await startTodoConsumer(model.modelName);
+
+    if (model.modelName === "TodoObject") {
+      await startTodoPublisher(model.modelName, result);
+      await startTodoConsumer("UserObject");
+    }
+
     res.json(result);
   } catch (err) {
     if (err.code === 11000) {
-      next(new ExistDataError("Element already exists"));
+      return next(new ExistDataError("Element already exists")); // return per evitare doppio next
     }
     next(err);
   }
