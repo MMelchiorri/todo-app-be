@@ -32,8 +32,8 @@ const insert = (model) => async (req, res, next) => {
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
     if (model.modelName === "TodoModel") {
-      await startTodoPublisher(model.modelName, result);
-      await startTodoConsumer(model.modelName);
+      await startTodoPublisher(result);
+      await startTodoConsumer(model);
     }
 
     res.json(result);

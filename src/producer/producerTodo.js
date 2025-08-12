@@ -7,7 +7,7 @@ const waitForChannel = async () => {
   }
 };
 
-const startTodoPublisher = async (model, message) => {
+const startTodoPublisher = async (message) => {
   await waitForChannel();
 
   rabbitmqService.channel.publish(

@@ -60,6 +60,11 @@ class Database {
   async deleteAll(model) {
     return await model.deleteMany().exec();
   }
+
+  async updateById(model, id, data) {
+    const user = await this.getElementById(model, id);
+    console.log("user", user, data);
+  }
 }
 
 module.exports = Database;
