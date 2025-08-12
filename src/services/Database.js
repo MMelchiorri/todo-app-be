@@ -62,8 +62,14 @@ class Database {
   }
 
   async updateById(model, id, data) {
-    const user = await this.getElementById(model, id);
-    console.log("user", user, data);
+    const user = await model.findOne({ email: data.assignedTo });
+    user.jobAssigned.push(id);
+    console.log("user", user);
+    if (!user) {
+      throw new Error("Element not found");
+    }
+
+    return await model.updateOne({ id: id }, data).exec();
   }
 }
 

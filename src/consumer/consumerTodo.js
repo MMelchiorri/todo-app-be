@@ -1,6 +1,7 @@
 const rabbitmq = require("../services/RabbitMQ");
 const rabbitmqService = rabbitmq.getInstance();
 const database = require("../services/Database").getInstance();
+const usersModel = require("../schemas/Users");
 
 const waitForChannel = async () => {
   while (!rabbitmqService.channel) {
@@ -18,7 +19,7 @@ const startTodoConsumer = async (model) => {
         try {
           const content = JSON.parse(msg.content.toString());
           console.log("📥 Message consumed from 'todo_queue':", content);
-          await database.updateById(model, content._id, content);
+          await database.updateById(usersModel, content._id, content);
 
           rabbitmqService.channel.ack(msg);
         } catch (err) {
