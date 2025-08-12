@@ -24,6 +24,5 @@ app.use(errorMiddleware);
 app.listen(port, async () => {
   Database.getInstance();
   RabbitMQ.getInstance();
-  console.log("Database connection established");
   console.log(`Server is running on port ${port}`);
 });
