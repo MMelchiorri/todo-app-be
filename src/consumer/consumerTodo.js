@@ -9,7 +9,7 @@ const waitForChannel = async () => {
 
 const startTodoConsumer = async (model) => {
   await waitForChannel();
-  console.log(model);
+  await rabbitmqService.channel.assertQueue(model, { durable: true });
   rabbitmqService.channel.consume(
     model,
     async (msg) => {
