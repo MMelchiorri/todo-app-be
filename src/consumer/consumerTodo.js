@@ -13,7 +13,6 @@ const startTodoConsumer = async (model) => {
   rabbitmqService.channel.consume(
     model,
     async (msg) => {
-      console.log(model, msg);
       if (msg !== null) {
         try {
           const content = JSON.parse(msg.content.toString());

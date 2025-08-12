@@ -11,7 +11,7 @@ const startTodoPublisher = async (model, message) => {
   await waitForChannel();
 
   rabbitmqService.channel.publish(
-    model.modelName,
+    "todo",
     "todo_job",
     Buffer.from(JSON.stringify(message)),
   );
