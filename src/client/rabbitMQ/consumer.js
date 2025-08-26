@@ -2,6 +2,7 @@ const rabbitmq = require('../../services/RabbitMQ')
 const rabbitmqService = rabbitmq.getInstance()
 const database = require('../../services/Database').getInstance()
 const usersModel = require('../../schemas/Users')
+const todoModel = require('../../schemas/Todos')
 
 const waitForChannel = async () => {
   while (!rabbitmqService.channel) {
@@ -18,13 +19,21 @@ const consumer = async (model) => {
       if (msg !== null) {
         try {
           const content = JSON.parse(msg.content.toString())
-          if (model.modelName === 'UsersModel') {
-            await database.updateUser(usersModel, content)
-            console.log("📥 Message consumed from 'todo_queue':", content)
-          }
-          if (model.modelName === 'TodosModel') {
-            await database.updateTodo(model, content)
-            console.log("📥 Message consumed from 'todo_queue':", content)
+          switch (model.modelName.trim()) {
+            case 'TodoModel':
+              await database.addTodoToUser(
+                usersModel,
+                content.assignedTo,
+                content,
+              )
+              break
+
+            case 'UserModel':
+              await database.deleteTodosByUser(todoModel, content.userId)
+              break
+
+            default:
+              console.warn('⚠️ Queue sconosciuta:', model.modelName)
           }
 
           rabbitmqService.channel.ack(msg)
@@ -36,8 +45,6 @@ const consumer = async (model) => {
     },
     { noAck: false },
   )
-
-  console.log('👂 Consumer started')
 }
 
 module.exports = consumer
