@@ -18,8 +18,14 @@ const consumer = async (model) => {
       if (msg !== null) {
         try {
           const content = JSON.parse(msg.content.toString())
-          console.log("📥 Message consumed from 'todo_queue':", content)
-          await database.updateById(usersModel, content)
+          if (model.modelName === 'UsersModel') {
+            await database.updateUser(usersModel, content)
+            console.log("📥 Message consumed from 'todo_queue':", content)
+          }
+          if (model.modelName === 'TodosModel') {
+            await database.updateTodo(model, content)
+            console.log("📥 Message consumed from 'todo_queue':", content)
+          }
 
           rabbitmqService.channel.ack(msg)
         } catch (err) {

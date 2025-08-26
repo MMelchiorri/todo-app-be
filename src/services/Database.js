@@ -61,7 +61,16 @@ class Database {
     return await model.deleteMany().exec()
   }
 
-  async updateById(model, data) {
+  async updateUser(model, data) {
+    const user = await model.findOne({ username: data.assignedTo })
+    user.jobAssigned.push(data._id)
+    if (!user) {
+      throw new Error('Element not found')
+    }
+
+    return await model.updateOne({ id: user.id }, user).exec()
+  }
+  async updateTodo(model, data) {
     const user = await model.findOne({ username: data.assignedTo })
     user.jobAssigned.push(data._id)
     if (!user) {
