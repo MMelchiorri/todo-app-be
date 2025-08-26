@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
-const { v4: uuidv4 } = require("uuid");
+const mongoose = require('mongoose')
+const { Schema } = mongoose
+const { v4: uuidv4 } = require('uuid')
 
 const Todos = new Schema({
   id: {
@@ -28,11 +28,11 @@ const Todos = new Schema({
   },
   category: {
     type: String,
-    default: "",
+    default: '',
   },
   assignedTo: {
     type: String,
-    default: "",
+    default: '',
   },
   dueDate: {
     type: Date,
@@ -50,8 +50,8 @@ const Todos = new Schema({
   },
   priority: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 
-module.exports = mongoose.model("TodoModel", Todos);
+module.exports = mongoose.model('TodoModel', Todos)

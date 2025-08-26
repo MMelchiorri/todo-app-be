@@ -24,9 +24,10 @@ class RabbitMQ {
         this.connection = await amqp.connect(uri);
         this.channel = await this.connection.createChannel();
         await this.channel.assertExchange("todo", "direct", { durable: true });
+        await this.channel.assertExchange("user", "direct", { durable: true });
         await this.channel.assertQueue("TodoModel", { durable: true });
         await this.channel.assertQueue("UserModel", { durable: true });
-        await this.channel.bindQueue("TodoModel", "todo", "todo_job");
+        await this.channel.bindQueue("TodoModel", "user", "user_job");
         await this.channel.bindQueue("UserModel", "todo", "todo_job");
 
         break;

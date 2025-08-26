@@ -3,9 +3,9 @@ const NoDataError = require("../error/NoData");
 const ExistDataError = require("../error/ExistData");
 const { v4: uuidv4 } = require("uuid");
 const database = Database.getInstance();
-const startTodoPublisher = require("../producer/producerTodo");
+const consumer = require("../client/rabbitMQ/consumer");
+const publisher = require("../client/rabbitMQ/producer");
 const bcrypt = require("bcryptjs");
-const startTodoConsumer = require("../consumer/consumerTodo");
 const readAll = (model) => async (req, res, next) => {
   try {
     const properties = Object.entries(req.query).reduce((acc, [key, value]) => {
@@ -31,15 +31,15 @@ const insert = (model) => async (req, res, next) => {
   try {
     req.body.id = uuidv4();
     const result = await database.insertElement(model, req.body);
-    if (model.modelName === "TodoModel") {
-      await startTodoPublisher(result);
-      await startTodoConsumer(model);
-    }
+    const exchange = model.modelName === "UserModel" ? "todo" : "user";
+    await publisher(result, exchange);
+    await consumer(model);
+
 
     res.json(result);
   } catch (err) {
     if (err.code === 11000) {
-      return next(new ExistDataError("Element already exists")); // return per evitare doppio next
+      return next(new ExistDataError("Element already exists"));
     }
     next(err);
   }

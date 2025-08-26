@@ -1,37 +1,37 @@
-const rest = require("../controllers/rest");
-const usersModel = require("../schemas/Users");
+const rest = require('../controllers/rest')
+const usersModel = require('../schemas/Users')
 
 usersRoutes = [
   {
-    method: "get",
-    route: "/users",
+    method: 'get',
+    route: '/users',
     controller: rest.readAll(usersModel),
   },
   {
-    method: "post",
-    route: "/users",
+    method: 'post',
+    route: '/users',
     controller: rest.insert(usersModel),
   },
   {
-    method: "get",
-    route: "/users/:id",
+    method: 'get',
+    route: '/users/:id',
     controller: rest.getById(usersModel),
   },
   {
-    method: "put",
-    route: "/users/:id",
+    method: 'put',
+    route: '/users/:id',
     controller: rest.put(usersModel),
   },
   {
-    method: "delete",
-    route: "/users/:id",
+    method: 'delete',
+    route: '/users/:id',
     controller: rest.deleteById(usersModel),
   },
   {
-    method: "delete",
-    route: "/users",
+    method: 'delete',
+    route: '/users',
     controller: rest.deleteAll(usersModel),
   },
-];
+]
 
-module.exports = usersRoutes;
+module.exports = usersRoutes

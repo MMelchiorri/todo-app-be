@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const { Schema } = mongoose;
-const { v4: uuidv4 } = require("uuid");
+const { Schema } = mongoose
+const { v4: uuidv4 } = require('uuid')
 
 const UserSchema = new Schema({
   id: {
@@ -41,6 +41,6 @@ const UserSchema = new Schema({
   jobAssigned: {
     type: [String],
   },
-});
+})
 
-module.exports = mongoose.model("UserModel", UserSchema);
+module.exports = mongoose.model('UserModel', UserSchema)

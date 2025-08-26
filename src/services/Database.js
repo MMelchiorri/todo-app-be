@@ -1,14 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 class Database {
-  static instance;
+  static instance
   static getInstance() {
     if (!Database.instance) {
-      Database.instance = new Database();
+      Database.instance = new Database()
     }
-    return Database.instance;
+    return Database.instance
   }
   constructor() {
-    this.connect();
+    this.connect()
   }
 
   connect() {
@@ -18,58 +18,58 @@ class Database {
         useUnifiedTopology: true,
       })
       .then(() => {
-        console.log("Database connection successful");
+        console.log('Database connection successful')
       })
       .catch((err) => {
-        console.error("Database connection error:", err);
-      });
+        console.error('Database connection error:', err)
+      })
   }
 
   async insertElement(model, data) {
     try {
-      const element = new model(data);
-      await element.save();
-      return element;
+      const element = new model(data)
+      await element.save()
+      return element
     } catch (error) {
-      throw error;
+      throw error
     }
   }
 
   async getElements(model, params = {}) {
-    return await model.find(params).exec();
+    return await model.find(params).exec()
   }
 
   async getElementById(model, id) {
     if (!id) {
-      throw new Error("ID is required to retrieve an element");
+      throw new Error('ID is required to retrieve an element')
     }
-    return await model.findById(id).exec();
+    return await model.findById(id).exec()
   }
 
   async put(model, id, data) {
-    const todoJob = await this.getElementById(model, id);
+    const todoJob = await this.getElementById(model, id)
     if (!todoJob) {
-      throw new Error("Element not found");
+      throw new Error('Element not found')
     }
-    return await model.updateOne({ id: id }, data).exec();
+    return await model.updateOne({ id: id }, data).exec()
   }
   async deleteElementById(model, id) {
-    return await model.findByIdAndDelete(id).exec();
+    return await model.findByIdAndDelete(id).exec()
   }
 
   async deleteAll(model) {
-    return await model.deleteMany().exec();
+    return await model.deleteMany().exec()
   }
 
   async updateById(model, data) {
-    const user = await model.findOne({ username: data.assignedTo });
-    user.jobAssigned.push(data._id);
+    const user = await model.findOne({ username: data.assignedTo })
+    user.jobAssigned.push(data._id)
     if (!user) {
-      throw new Error("Element not found");
+      throw new Error('Element not found')
     }
 
-    return await model.updateOne({ id: user.id }, user).exec();
+    return await model.updateOne({ id: user.id }, user).exec()
   }
 }
 
-module.exports = Database;
+module.exports = Database
