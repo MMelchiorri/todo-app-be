@@ -29,7 +29,7 @@ const consumer = async (model) => {
               break
 
             case 'UserModel':
-              await database.deleteTodosByUser(todoModel, content.userId)
+              await database.updateUserFromTodo(todoModel, content.username)
               break
 
             default:

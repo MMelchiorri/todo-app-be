@@ -69,8 +69,11 @@ class Database {
     )
   }
 
-  async deleteTodosByUser(todoModel, userId) {
-    return todoModel.deleteMany({ userId })
+  async updateUserFromTodo(todoModel, username) {
+    return todoModel
+      .find({ assignedTo: username })
+      .updateMany({ assignedTo: '' })
+      .exec()
   }
 }
 
