@@ -24,13 +24,12 @@ const consumer = async (model) => {
               await database.addTodoToUser(
                 usersModel,
                 content._doc.assignedTo,
-                content,
+                content._doc._id,
               )
               break
 
             case 'UserModel':
               if (content.action === 'DELETE') {
-                console.log('sono in delete user')
                 await database.deleteUserFromTodo(todoModel, content._doc)
               } else {
                 await database.updateUserFromTodo(todoModel, content._doc)

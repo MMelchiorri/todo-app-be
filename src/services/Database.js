@@ -64,7 +64,7 @@ class Database {
   async addTodoToUser(usersModel, assignedTo, todo) {
     return usersModel.findOneAndUpdate(
       { username: assignedTo },
-      { $push: { jobAssigned: todo._id } },
+      { $push: { jobAssigned: todo } },
       { new: true },
     )
   }
