@@ -6,9 +6,13 @@ const waitForChannel = async () => {
     await new Promise((res) => setTimeout(res, 500))
   }
 }
-
-const publisher = async (message, exchange) => {
+const publisher = async (message, exchange, action) => {
   await waitForChannel()
+
+  const payload = {
+    ...message,
+    action,
+  }
 
   switch (exchange) {
     case 'todo':
@@ -18,7 +22,7 @@ const publisher = async (message, exchange) => {
       rabbitmqService.channel.publish(
         'todo',
         'todo_job',
-        Buffer.from(JSON.stringify(message)),
+        Buffer.from(JSON.stringify(payload)),
       )
       break
 
@@ -29,7 +33,7 @@ const publisher = async (message, exchange) => {
       rabbitmqService.channel.publish(
         'user',
         'user_job',
-        Buffer.from(JSON.stringify(message)),
+        Buffer.from(JSON.stringify(payload)),
       )
       break
 

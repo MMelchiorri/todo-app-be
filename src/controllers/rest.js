@@ -6,6 +6,7 @@ const database = Database.getInstance()
 const consumer = require('../client/rabbitMQ/consumer')
 const publisher = require('../client/rabbitMQ/producer')
 const bcrypt = require('bcryptjs')
+
 const readAll = (model) => async (req, res, next) => {
   try {
     const properties = Object.entries(req.query).reduce((acc, [key, value]) => {
@@ -25,14 +26,14 @@ const readAll = (model) => async (req, res, next) => {
 const insert = (model) => async (req, res, next) => {
   if (model.modelName === 'UserModel') {
     req.body.createdAt = new Date()
-    req.body.password = bcrypt.hashSync(req.body.password, 10) // Meglio async per non bloccare
+    req.body.password = bcrypt.hashSync(req.body.password, 10)
   }
 
   try {
     req.body.id = uuidv4()
     const result = await database.insertElement(model, req.body)
     const exchange = model.modelName === 'UserModel' ? 'todo' : 'user'
-    await publisher(result, exchange)
+    await publisher(result, exchange, req.method)
     await consumer(model)
 
     res.json(result)
@@ -78,8 +79,8 @@ const deleteById = (model) => async (req, res, next) => {
     }
     await database.deleteElementById(model, req.params.id)
     const exchange = model.modelName === 'UserModel' ? 'todo' : 'user'
-    await publisher(result, exchange)
-    await consumer(model)
+    await publisher(result, exchange, req.method)
+    await consumer(model, 'DELETE')
     res.status(204).send()
   } catch (err) {
     next(err)

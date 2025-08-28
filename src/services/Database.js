@@ -69,11 +69,27 @@ class Database {
     )
   }
 
-  async updateUserFromTodo(todoModel, username) {
-    return todoModel
-      .find({ assignedTo: username })
-      .updateMany({ assignedTo: '' })
-      .exec()
+  async updateUserFromTodo(todoModel, user) {
+    await Promise.all(
+      user.jobAssigned.map(async (jobId) => {
+        const todo = await todoModel.findById(jobId).exec()
+        if (todo && !todo.assignedTo) {
+          todo.assignedTo = user.username
+          await todo.save()
+        }
+      }),
+    )
+  }
+  async deleteUserFromTodo(todoModel, user) {
+    await Promise.all(
+      user.jobAssigned.map(async (jobId) => {
+        const todo = await todoModel.findById(jobId).exec()
+        if (todo && todo.assignedTo === user.username) {
+          todo.assignedTo = ''
+          await todo.save()
+        }
+      }),
+    )
   }
 }
 
