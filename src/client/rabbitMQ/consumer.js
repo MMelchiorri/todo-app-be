@@ -19,7 +19,6 @@ const consumer = async (model) => {
       if (msg !== null) {
         try {
           const content = JSON.parse(msg.content.toString())
-          console.log('consumer - Received message:', content)
           switch (model.modelName.trim()) {
             case 'TodoModel':
               await database.addTodoToUser(
