@@ -62,10 +62,14 @@ const getById = (model) => async (req, res, next) => {
 const put = (model) => async (req, res, next) => {
   try {
     const result = await database.getElementById(model, req.params.id)
+
     if (!result) {
       return next(new NoDataError('Element not found'))
     }
     await database.put(model, req.params.id, req.body)
+    return res
+      .status(200)
+      .json(await database.getElementById(model, req.params.id))
   } catch (err) {
     next(err)
   }

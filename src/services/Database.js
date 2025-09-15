@@ -51,7 +51,7 @@ class Database {
     if (!todoJob) {
       throw new Error('Element not found')
     }
-    return await model.updateOne({ id: id }, data).exec()
+    return await model.findByIdAndUpdate(id, data).exec()
   }
   async deleteElementById(model, id) {
     return await model.findByIdAndDelete(id).exec()
