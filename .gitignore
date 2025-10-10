@@ -1,3 +1,5 @@
 docker
 
 .idea
+
+docker/redis/redis.conf/redis.conf
