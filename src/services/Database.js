@@ -46,6 +46,7 @@ class Database {
       priority: element.priority || '',
       createdAt: element.createdAt.toISOString(),
     })
+    Database.redisClient.expire(`todo-session:${element._id}`, 3600)
     return element
   }
 
@@ -57,9 +58,23 @@ class Database {
     if (!id) {
       throw new Error('ID is required to retrieve an element')
     }
-    console.log(`todo-session:${id}`)
     const todo = await Database.redisClient.hGetAll(`todo-session:${id}`)
-    console.log(todo)
+    if (todo && Object.keys(todo).length > 0) {
+      return {
+        id: todo.id,
+        name: todo.name,
+        description: todo.description,
+        completed: todo.completed === 'true',
+        tags: todo.tags ? todo.tags.split(',') : [],
+        category: todo.category || '',
+        assignedTo: todo.assignedTo || '',
+        dueDate: todo.dueDate ? new Date(todo.dueDate) : null,
+        reminder: todo.reminder === 'true',
+        reminderAt: todo.reminderAt ? new Date(todo.reminderAt) : null,
+        priority: todo.priority || '',
+        createdAt: new Date(todo.createdAt),
+      }
+    }
     return await model.findById(id).exec()
   }
 
@@ -68,8 +83,24 @@ class Database {
     if (!todoJob) {
       throw new Error('Element not found')
     }
-    return await model.findByIdAndUpdate(id, data).exec()
+    const updated = await model.findByIdAndUpdate(id, data).exec()
+
+    await Database.redisClient.hSet(`todo-session:${id}`, {
+      id: updated._id.toString(),
+      name: updated.name,
+      description: updated.description,
+      completed: updated.completed ? 'true' : 'false',
+      tags: updated.tags.join(','),
+      category: updated.category || '',
+      assignedTo: updated.assignedTo || '',
+      dueDate: updated.dueDate ? updated.dueDate.toISOString() : '',
+      reminder: updated.reminder ? 'true' : 'false',
+      reminderAt: updated.reminderAt ? updated.reminderAt.toISOString() : '',
+      priority: updated.priority || '',
+      createdAt: updated.createdAt.toISOString(),
+    })
   }
+
   async deleteElementById(model, id) {
     return await model.findByIdAndDelete(id).exec()
   }
