@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
+const Redis = require('./Redis')
+require('dotenv').config()
+
 class Database {
   static instance
+  static redisClient = Redis.getInstance().client
   static getInstance() {
     if (!Database.instance) {
       Database.instance = new Database()
@@ -26,13 +30,23 @@ class Database {
   }
 
   async insertElement(model, data) {
-    try {
-      const element = new model(data)
-      await element.save()
-      return element
-    } catch (error) {
-      throw error
-    }
+    const element = new model(data)
+    await element.save()
+    Database.redisClient.hSet(`todo-session:${element._id}`, {
+      id: element._id.toString(),
+      name: element.name,
+      description: element.description,
+      completed: element.completed ? 'true' : 'false',
+      tags: element.tags.join(','),
+      category: element.category || '',
+      assignedTo: element.assignedTo || '',
+      dueDate: element.dueDate ? element.dueDate.toISOString() : '',
+      reminder: element.reminder ? 'true' : 'false',
+      reminderAt: element.reminderAt ? element.reminderAt.toISOString() : '',
+      priority: element.priority || '',
+      createdAt: element.createdAt.toISOString(),
+    })
+    return element
   }
 
   async getElements(model, params = {}) {
@@ -43,6 +57,9 @@ class Database {
     if (!id) {
       throw new Error('ID is required to retrieve an element')
     }
+    console.log(`todo-session:${id}`)
+    const todo = await Database.redisClient.hGetAll(`todo-session:${id}`)
+    console.log(todo)
     return await model.findById(id).exec()
   }
 
