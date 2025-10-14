@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Redis = require('./Redis')
+const { createLock } = require('redlock-universal')
 require('dotenv').config()
 
 class Database {
@@ -122,11 +123,19 @@ class Database {
   }
 
   async deleteElementById(model, id) {
-    return await model.findByIdAndDelete(id).exec()
+    const del = await model.findByIdAndDelete(id).exec()
+    if (del) {
+      await Database.redisClient.del(`todo-session:${id}`)
+    }
+    return del
   }
 
   async deleteAll(model) {
-    return await model.deleteMany().exec()
+    await model.deleteMany().exec()
+    const keys = await Database.redisClient.keys('todo-session:*')
+    if (keys.length > 0) {
+      await Database.redisClient.del(keys)
+    }
   }
 
   async addTodoToUser(usersModel, assignedTo, todo) {
