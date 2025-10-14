@@ -31,7 +31,9 @@ class Database {
 
   async insertElement(model, data) {
     const element = new model(data)
+
     await element.save()
+
     Database.redisClient.hSet(`todo-session:${element._id}`, {
       id: element._id.toString(),
       name: element.name,
@@ -46,7 +48,7 @@ class Database {
       priority: element.priority || '',
       createdAt: element.createdAt.toISOString(),
     })
-    Database.redisClient.expire(`todo-session:${element._id}`, 3600)
+    Database.redisClient.expire(`todo-session:${element._id}`, 10)
     return element
   }
 
@@ -85,20 +87,38 @@ class Database {
     }
     const updated = await model.findByIdAndUpdate(id, data).exec()
 
-    await Database.redisClient.hSet(`todo-session:${id}`, {
-      id: updated._id.toString(),
-      name: updated.name,
-      description: updated.description,
-      completed: updated.completed ? 'true' : 'false',
-      tags: updated.tags.join(','),
-      category: updated.category || '',
-      assignedTo: updated.assignedTo || '',
-      dueDate: updated.dueDate ? updated.dueDate.toISOString() : '',
-      reminder: updated.reminder ? 'true' : 'false',
-      reminderAt: updated.reminderAt ? updated.reminderAt.toISOString() : '',
-      priority: updated.priority || '',
-      createdAt: updated.createdAt.toISOString(),
-    })
+    const fields = [
+      'id',
+      updated._id.toString(),
+      'name',
+      updated.name,
+      'description',
+      updated.description,
+      'completed',
+      updated.completed ? 'true' : 'false',
+      'tags',
+      updated.tags.join(','),
+      'category',
+      updated.category || '',
+      'assignedTo',
+      updated.assignedTo || '',
+      'dueDate',
+      updated.dueDate ? updated.dueDate.toISOString() : '',
+      'reminder',
+      updated.reminder ? 'true' : 'false',
+      'reminderAt',
+      updated.reminderAt ? updated.reminderAt.toISOString() : '',
+      'priority',
+      updated.priority || '',
+      'createdAt',
+      updated.createdAt.toISOString(),
+    ]
+
+    await Database.redisClient
+      .multi()
+      .hSet(`todo-session:${id}`, fields)
+      .expire(`todo-session:${id}`, 10)
+      .exec()
   }
 
   async deleteElementById(model, id) {

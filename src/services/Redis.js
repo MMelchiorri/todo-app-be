@@ -17,7 +17,6 @@ class Redis {
     this.client = createClient({
       url: process.env.REDIS_URI,
     })
-    console.log(process.env.REDIS_URI)
 
     this.client.on('error', (err) => console.log('Redis Client Error', err))
 
