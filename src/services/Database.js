@@ -86,7 +86,6 @@ class Database {
     if (!todoJob) {
       throw new Error('Element not found')
     }
-    const updated = await model.findByIdAndUpdate(id, data).exec()
 
     const lock = createLock({
       adapter: new NodeRedisAdapter(Database.redisClient),
@@ -96,6 +95,7 @@ class Database {
       ttl: 3600,
     })
     const handle = await lock.acquire()
+    const updated = await model.findByIdAndUpdate(id, data).exec()
 
     const fields = [
       'id',
@@ -134,16 +134,13 @@ class Database {
   }
 
   async deleteElementById(model, id) {
+    const isLocked = await Database.redisClient.exists(
+      `locks:todo-session:${id}`,
+    )
+    if (isLocked) {
+      throw new Error('Element is currently locked for editing')
+    }
     const del = await model.findByIdAndDelete(id).exec()
-    const lock = createLock({
-      adapter: new NodeRedisAdapter(Database.redisClient),
-      key: `locks:todo-session:${id}`,
-      retryCount: 5,
-      retryDelay: 100,
-      ttl: 3600,
-    })
-    const handle = await lock.acquire()
-    await lock.release(handle)
     if (del) {
       await Database.redisClient.del(`todo-session:${id}`)
     }
