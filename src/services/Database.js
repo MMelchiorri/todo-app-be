@@ -49,7 +49,7 @@ class Database {
       priority: element.priority || '',
       createdAt: element.createdAt.toISOString(),
     })
-    Database.redisClient.expire(`todo-session:${element._id}`, 10)
+    Database.redisClient.expire(`todo-session:${element._id}`, 3600)
     return element
   }
 
