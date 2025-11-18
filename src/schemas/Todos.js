@@ -52,6 +52,10 @@ const Todos = new Schema({
     type: String,
     default: '',
   },
+  status: {
+    type: String,
+    default: 'pending',
+  },
 })
 
 module.exports = mongoose.model('TodoModel', Todos)
