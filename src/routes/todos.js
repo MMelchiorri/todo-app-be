@@ -18,6 +18,11 @@ todosRoutes = [
     controller: rest.getById(todosModel),
   },
   {
+    method: 'get',
+    route: '/todos',
+    controller: rest.getByStatus(todosModel),
+  },
+  {
     method: 'put',
     route: '/todos/:id',
     controller: rest.put(todosModel),

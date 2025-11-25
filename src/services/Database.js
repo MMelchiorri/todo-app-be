@@ -80,6 +80,9 @@ class Database {
     }
     return await model.findById(id).exec()
   }
+  async getElementsByStatus(model, status) {
+    return await model.find({ status: status })
+  }
 
   async put(model, id, data) {
     const todoJob = await this.getElementById(model, id)

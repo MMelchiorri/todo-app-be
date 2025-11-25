@@ -58,4 +58,7 @@ const Todos = new Schema({
   },
 })
 
+Todos.index({ status: 1 })
+Todos.index({ priority: 1 })
+
 module.exports = mongoose.model('TodoModel', Todos)

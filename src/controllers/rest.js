@@ -59,6 +59,20 @@ const getById = (model) => async (req, res, next) => {
   }
 }
 
+const getByStatus = (model) => async (req, res, next) => {
+  try {
+    const result = await database.getElementsByStatus(model, req.params.status)
+
+    if (result) {
+      res.send(result)
+    } else {
+      return next(new NoDataError('Element not found'))
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
 const put = (model) => async (req, res, next) => {
   try {
     const result = await database.getElementById(model, req.params.id)
@@ -100,4 +114,12 @@ const deleteAll = (model) => async (req, res, next) => {
   }
 }
 
-module.exports = { readAll, insert, getById, put, deleteById, deleteAll }
+module.exports = {
+  readAll,
+  insert,
+  getById,
+  getByStatus,
+  put,
+  deleteById,
+  deleteAll,
+}
